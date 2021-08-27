@@ -59,9 +59,7 @@ jobs:
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         cd /opt/circuitpython/ports/esp32s2
         make BOARD=${{github.event.inputs.board}}
-        cp -i ports/esp32s2/build-${{github.event.inputs.board}} *.bin /opt/firmware
-        cp -i ports/esp32s2/build-${{github.event.inputs.board}} *.uf2 /opt/firmware
-
+        cp ports/esp32s2/build-${{github.event.inputs.board}} /opt/firmware
 
     - name : Upload firmware-${{github.event.inputs.branches-tags}}-esp32s2-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master
