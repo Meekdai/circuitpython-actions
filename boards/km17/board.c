@@ -142,7 +142,7 @@ void board_init(void) {
     #endif /* DEBUG */
 
     // Display
-    display_init();
+    // display_init();
 }
 
 bool board_requests_safe_mode(void) {
