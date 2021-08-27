@@ -1,1 +1,0 @@
-km17 is a board of self-keyboard, it has ST7789(240X240) / 17 mechanical keyboard / one Encoder

@@ -15,10 +15,6 @@ on:
         description: 'board'
         required: true
         default: 'espressif_saola_1_wrover'
-      idf-version:
-        description: 'idf-version'
-        required: false
-        default: 'v4.3-beta2'
       custom-board:
         description: 'custom-board'
         required: false
@@ -58,7 +54,7 @@ jobs:
         git submodule update --init
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         cd /opt/circuitpython/ports/esp32s2
-        make BOARD=${{github.event.inputs.board}}
+        make BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
         cp /opt/circuitpython/ports/esp32s2/build-${{github.event.inputs.board}}/firmware.bin /opt/firmware
         cp /opt/circuitpython/ports/esp32s2/build-${{github.event.inputs.board}}/firmware.uf2 /opt/firmware
 
