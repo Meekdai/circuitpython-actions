@@ -1,0 +1,69 @@
+name: build-esp32s2
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-address:
+        description: 'git-address'
+        required: true
+        default: 'https://github.com/adafruit/circuitpython'
+      branches-tags:
+        description: 'branches-tags'
+        required: true
+        default: 'main'
+      board:
+        description: 'board'
+        required: true
+        default: 'espressif_saola_1_wrover'
+      idf-version:
+        description: 'idf-version'
+        required: true
+        default: 'v4.3-beta2'
+      custom-board:
+        description: 'custom-board'
+        required: false
+        default: ''
+      build-with:
+        description: 'build-with'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone source code
+      run: |
+        git clone ${{github.event.inputs.git-address}} /opt/circuitpython
+        cd /opt/circuitpython
+
+    - name: Install packages
+      run: |
+        brew install cmake
+        sudo apt install ninja-build cmake
+        sudo apt install python-is-python3
+        cd /opt/circuitpython/ports/esp32s2
+        esp-idf/install.sh
+        cd /opt/circuitpython/ports/esp32s2
+        source esp-idf/export.sh
+
+    - name: Bulid
+      run: |
+        mkdir /opt/firmware
+        cd /opt/circuitpython
+        git checkout ${{github.event.inputs.branches-tags}}
+        git pull origin ${{github.event.inputs.branches-tags}}
+        git submodule update --init
+        make -C mpy-cross
+        make -C ports/esp32s2 submodules
+        cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
+        make -C ports/esp32s2 BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
+        cp ports/esp32s2/build-${{github.event.inputs.board}}/firmware.bin /opt/firmware
+        cp ports/esp32s2/build-${{github.event.inputs.board}}/firmware.uf2 /opt/firmware
+
+    - name : Upload firmware-${{github.event.inputs.branches-tags}}-esp32s2-${{github.event.inputs.board}}
+      uses: actions/upload-artifact@master
+      with:
+        name: firmware-${{github.event.inputs.branches-tags}}-esp32s2-${{github.event.inputs.board}}
+        path: /opt/firmware
