@@ -45,11 +45,12 @@ jobs:
         sudo apt install python-is-python3
         cd /opt/circuitpython/ports/esp32s2
         ./esp-idf/install.sh
-        cd /opt/circuitpython/ports/esp32s2
-        source esp-idf/export.sh
+
 
     - name: Bulid
       run: |
+        cd /opt/circuitpython/ports/esp32s2
+        source ./esp-idf/export.sh
         mkdir /opt/firmware
         cd /opt/circuitpython
         git checkout ${{github.event.inputs.branches-tags}}
