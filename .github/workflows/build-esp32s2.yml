@@ -17,7 +17,7 @@ on:
         default: 'espressif_saola_1_wrover'
       idf-version:
         description: 'idf-version'
-        required: true
+        required: false
         default: 'v4.3-beta2'
       custom-board:
         description: 'custom-board'
@@ -45,7 +45,6 @@ jobs:
         sudo apt install python-is-python3
         cd /opt/circuitpython/ports/esp32s2
         ./esp-idf/install.sh
-
 
     - name: Bulid
       run: |
