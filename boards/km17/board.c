@@ -62,7 +62,7 @@ uint8_t display_init_sequence[] = {
     0x21, 0,
     // display on
     0x21, 0 | DELAY, 10,        // _INVON
-    0x29, 0 | DELAY, 255,
+    0x29, 0 | DELAY, 120,
 };
 
 static void display_init(void) {
@@ -114,6 +114,7 @@ static void display_init(void) {
         MIPI_COMMAND_SET_COLUMN_ADDRESS, // set column command
         MIPI_COMMAND_SET_PAGE_ADDRESS,   // set row command
         MIPI_COMMAND_WRITE_MEMORY_START, // write memory command
+        0x37, // set vertical scroll command
         display_init_sequence,
         sizeof(display_init_sequence),
         &pin_GPIO33,    // backlight pin
@@ -155,4 +156,5 @@ void reset_board(void) {
 }
 
 void board_deinit(void) {
+    common_hal_displayio_release_displays();
 }
