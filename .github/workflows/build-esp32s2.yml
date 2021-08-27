@@ -55,8 +55,6 @@ jobs:
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
         git submodule update --init
-        make -C mpy-cross
-        make -C ports/esp32s2 submodules
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         make -C ports/esp32s2 BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
         cp ports/esp32s2/build-${{github.event.inputs.board}}/firmware.bin /opt/firmware
