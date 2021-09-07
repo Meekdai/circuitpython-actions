@@ -40,19 +40,18 @@ jobs:
         sudo apt install ninja-build cmake
         sudo apt install python-is-python3
         sudo apt-get install gettext
-        cd /opt/circuitpython/ports/esp32s2
-        ./esp-idf/install.sh
-
-    - name: Bulid
-      run: |
-        mkdir /opt/firmware
         cd /opt/circuitpython
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
         git submodule update --init
         cd /opt/circuitpython/ports/esp32s2
+        ./esp-idf/install.sh
+
+    - name: Bulid
+      run: |
+        cd /opt/circuitpython/ports/esp32s2
         source ./esp-idf/export.sh
-        cd /opt/circuitpython
+        mkdir /opt/firmware
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         cd /opt/circuitpython/ports/esp32s2
         make BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
