@@ -45,13 +45,14 @@ jobs:
 
     - name: Bulid
       run: |
-        cd /opt/circuitpython/ports/esp32s2
-        source ./esp-idf/export.sh
         mkdir /opt/firmware
         cd /opt/circuitpython
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
         git submodule update --init
+        cd /opt/circuitpython/ports/esp32s2
+        source ./esp-idf/export.sh
+        cd /opt/circuitpython
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         cd /opt/circuitpython/ports/esp32s2
         make BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
