@@ -116,7 +116,7 @@ static void display_init(void) {
         MIPI_COMMAND_WRITE_MEMORY_START, // write memory command
         display_init_sequence,
         sizeof(display_init_sequence),
-        &pin_GPIO33,    // backlight pin
+        NULL,    // backlight pin
         NO_BRIGHTNESS_COMMAND,
         1.0f,           // brightness (ignored)
         false,          // auto_brightness
@@ -128,7 +128,7 @@ static void display_init(void) {
         false           // SH1107_addressing
     );
 
-    common_hal_never_reset_pin(&pin_GPIO33); // backlight pin
+    // common_hal_never_reset_pin(&pin_GPIO33); // backlight pin
 }
 
 void board_init(void) {

@@ -10,7 +10,7 @@ on:
       branches-tags:
         description: 'branches-tags'
         required: true
-        default: 'main'
+        default: '7.0.0-beta.0'
       board:
         description: 'board'
         required: true
