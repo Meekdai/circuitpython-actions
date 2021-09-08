@@ -10,7 +10,7 @@ on:
       branches-tags:
         description: 'branches-tags'
         required: true
-        default: '7.0.0-beta.0'
+        default: '7.0.0-rc.1'
       board:
         description: 'board'
         required: true
@@ -40,10 +40,6 @@ jobs:
         sudo apt install ninja-build cmake
         sudo apt install python-is-python3
         sudo apt-get install gettext
-        cd /opt/circuitpython
-        git checkout ${{github.event.inputs.branches-tags}}
-        git pull origin ${{github.event.inputs.branches-tags}}
-        git submodule update --init
         cd /opt/circuitpython/ports/esp32s2
         ./esp-idf/install.sh
 
@@ -53,6 +49,9 @@ jobs:
         source ./esp-idf/export.sh
         mkdir /opt/firmware
         cd /opt/circuitpython
+        git checkout ${{github.event.inputs.branches-tags}}
+        git pull origin ${{github.event.inputs.branches-tags}}
+        git submodule update --init
         cp -r /home/runner/work/circuitpython-actions/circuitpython-actions/boards/${{github.event.inputs.custom-board}} ports/esp32s2/boards
         cd /opt/circuitpython/ports/esp32s2
         make BOARD=${{github.event.inputs.board}} ${{github.event.inputs.build-with}}
